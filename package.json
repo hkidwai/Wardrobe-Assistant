@@ -1,0 +1,22 @@
+{
+  "name": "wardrobe-assistant",
+  "version": "1.0.0",
+  "description": "Wardrobe-Assistant",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hkidwai/Wardrobe-Assistant.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hkidwai/Wardrobe-Assistant/issues"
+  },
+  "homepage": "https://github.com/hkidwai/Wardrobe-Assistant#readme",
+  "dependencies": {
+    "bulma": "^0.8.0"
+  }
+}
