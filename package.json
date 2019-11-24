@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/hkidwai/Wardrobe-Assistant#readme",
   "dependencies": {
-    "bulma": "^0.8.0"
+    "@fortawesome/fontawesome-free": "^5.11.2",
+    "axios": "^0.19.0",
+    "bulma": "^0.8.0",
+    "jquery": "^3.4.1"
   }
 }
