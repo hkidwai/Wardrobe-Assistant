@@ -4,11 +4,12 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Inventory
-	</title>
+	<title>Inventory</title>
 
-	<link rel="stylesheet" type="text/css" href="node_modules/bulma/css/bulma.css">
-	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/bulma/css/bulma.css" />
+	<link rel="stylesheet" type="text/css" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/axios/dist/axios.min.js"></script>
 
 </head>
 
@@ -21,121 +22,46 @@
 
 		<div class="tile is-ancestor" style="display:block">
 
-			<div class="tile is-3 is-parent">
-					<div class="tile is-child box field">
-						<div id="reset-root">
-							<div style="display:inline">
-								<p class="title is-5">Shirts</p>
-								<div class="field is-grouped">
-								</div>
-								<img src="shirt.jpg" alt="Italian Trulli">
-								<div class="field">
-									<div class="control">
-										<button id="reset-button" class="button is-danger is-expanded">Add</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="tile is-3 is-parent" style="display: inline;">
+				<div class="tile is-child box field">
+					<div id="reset-root">
+						<div style="display:inline">
+							<p class="title is-5">Shirts</p>
 
-				<div class="tile is-3 is-parent">
-						<div class="tile is-child box field">
-							<div id="reset-root">
-								<div>
-									<p class="title is-5">Pants</p>
-									<div class="field is-grouped">
-	
-									</div>
-									<img src="pants  .jpg" alt="Italian Trulli">
-									<div class="field">
-										<div class="control">
-											<button id="reset-button" class="button is-danger is-expanded">Add</button>
-										</div>
-									</div>
+							<div id="shirtBar" class="container" style="overflow-x:scroll;">
+								<div class="notification" style="overflow-x:scroll">
+									This container is <strong>centered</strong> on desktop.
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="tile is-3 is-parent">
-							<div class="tile is-child box field">
-								<div id="reset-root">
-									<div>
-										<p class="title is-5">Shoes</p>
-										<div class="field is-grouped">
-		
-										</div>
-										<div class="field">
-											<div class="control">
-												<button id="reset-button" class="button is-danger is-expanded">Add</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 
-			<div class="tile is-3 is-parent">
-				<div class="tile is-child field">
-					<div>
-						<div id="won-root">
+							<form method="post" enctype="multipart/form-data">
+								<input type="file" name="files[]" multiple />
+								<input id="UploadShirt" class="submitUpload" type="button" value="Upload File"
+									name="submit" />
+
+							</form>
+
+
+
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="tile is-3 is-parent">
-				<div class="tile is-child field">
-					<div>
-						<div id="over-root">
-						</div>
-					</div>
-				</div>
-			</div>
+
+
+
+
+
+
 		</div>
 	</div>
+	<script type="module" src="inventory.js" type="module"></script>
 
-	<script type="module">
 
-		import { Controller } from './engine/controller.js'
-		let controller = new Controller();
 
-		document.addEventListener('keydown', (ev) => {
-			if (ev.key)
+</body>
 
-				switch (ev.key) {
-					case "ArrowUp":
-						ev.preventDefault();
-						controller.move('up');
-						break;
-					case "ArrowLeft":
-						ev.preventDefault();
-						controller.move('left');
-						break;
-					case "ArrowDown":
-						ev.preventDefault();
-						controller.move('down');
-						break;
-					case "ArrowRight":
-						ev.preventDefault();
-						controller.move('right');
-						break;
-				}
-		}); // view sends the controller events
 
-		document.getElementById('increase-width-button').addEventListener('click', (ev) => {
-			let width_input = document.getElementById('width');
-			width_input.value++;
-		})
-		document.getElementById('decrease-width-button').addEventListener('click', (ev) => {
-			let width_input = document.getElementById('width');
-			width_input.value--;
-		})
-		document.getElementById('reset-button').addEventListener('click', (ev) => {
-			let width = document.getElementById('width').value;
-			controller.newGame(width);
-		})
-
-	</script>
 
 </body>
 

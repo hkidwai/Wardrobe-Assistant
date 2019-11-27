@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login/Sign In</title>
 
-  <link rel="stylesheet" href="node_modules/bulma/css/bulma.css" />
-  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" type="text/css" href="node_modules/bulma/css/bulma.css" />
+  <link rel="stylesheet" type="text/css" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/axios/dist/axios.min.js"></script>
 </head>
@@ -29,7 +29,7 @@
           <div class="field-body">
             <div class="field">
               <p class="control is-expanded has-icons-left has-icons-right">
-                <input class="input is-success" type="email" placeholder="Email" value="">
+                <input class="input" id="email-input" type="email" placeholder="Email" value="">
                 <span class="icon is-small is-left">
                   <i class="fas fa-envelope"></i>
                 </span>
@@ -48,7 +48,23 @@
           <div class="field-body">
             <div class="field is-expanded">
               <p class="control has-icons-left">
-                <input class="input" type="password" placeholder="Password">
+                <input class="input" id="password-input" type="password" placeholder="Password">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal is-hidden" id="confirm-password-field">
+          <div class="field-label is-normal">
+            <label class="label">Confirm Password</label>
+          </div>
+          <div class="field-body">
+            <div class="field is-expanded">
+              <p class="control has-icons-left">
+                <input id="confirm-password-input" class="input" type="password" placeholder="Confirm Password">
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
@@ -89,22 +105,42 @@
         </div>
 
         <div class="field is-horizontal">
-          <div class="field-label">
-            <!-- Left empty for spacing -->
+          <div class="field-label is-normal">
+            <label class="label">
+              <!-- Left empty for spacing --></label>
           </div>
+
           <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <button class="button is-primary" type="submit">
-                  Sign-in
+            <div class="field is-grouped">
+              <p class="control" id="login-control">
+                <button class="button is-success" type="submit" id="login-button">
+                  Login
                 </button>
-              </div>
+              </p>
+              <p class="control" id="create-account-control">
+                <button class="button is-danger" type="button" id="create-account-button">
+                  Create Account
+                </button>
+              </p>
+              <p class="control is-hidden" id="go-back-control">
+                <button class="button is-danger" type="button" id="go-back-button">
+                  Go Back
+                </button>
+              </p>
+              <p class="control is-hidden" id="create-my-account-control">
+                <button class="button is-success" type="button" id="create-my-account-button">
+                  Create My Account!
+                </button>
+              </p>
             </div>
           </div>
         </div>
-        <input type="hidden" id="latitude"></input>
-        <input type="hidden" id="longitude"></input>
-      </form>
+
+
+    </div>
+    <input type="hidden" id="latitude-input"></input>
+    <input type="hidden" id="longitude-input"></input>
+    </form>
     </div>
   </section>
 
@@ -115,34 +151,125 @@
     //event.preventDefault();
     //console.log(event)
   })
-  $(`#find-me-button`).on('click', (event) => {
+  
+  let currentPositionSuccessCallback = async (position) => {
     let locationInput = $(`#location-input`);
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      let latitude = position.coords.latitude.toFixed(2);
-      let longitude = position.coords.longitude.toFixed(2);
-      $(`#latitude`).val(latitude);
-      $(`#longitude`).val(longitude);
-      let endpoint = `https://api.weather.gov/points/${latitude},${longitude}`;
-      //console.log(latitude, longitude)
-      //console.log(endpoint);
-      //console.log(locationInput);
-      let result = axios({
-        method: 'get',
-        url: endpoint,
-      }).then((response) => {
-        //console.log(response.data)
-        let properties = response.data.properties.relativeLocation.properties;
-        let city = properties.city;
-        let state = properties.state;
-        //console.log(`${city}, ${state}`)
-        locationInput.val(`${city}, ${state}`)
-      }).catch((error) => {
-        //console.log(`${error}`)
-        //console.log(`${error.message}`)
-        locationInput.val(`${error.message}`)
-      })
-    })
+    let latitude = position.coords.latitude;//.toFixed(2);
+    let longitude = position.coords.longitude;//.toFixed(2);
+    $(`#latitude-input`).val(latitude);
+    $(`#longitude-input`).val(longitude);
+    let apiEndpoint = `https://api.weather.gov/points/${latitude},${longitude}`;
+    let result = axios({
+      method: 'get',
+      url: apiEndpoint,
+    }).then((response) => {
+      let data = response.data;
+      let relativeLocationProperties = data.properties.relativeLocation.properties;
+      let city = relativeLocationProperties.city;
+      let state = relativeLocationProperties.state;
+      locationInput.val(`${city}, ${state}`)
+    }).catch((error) => {
+      locationInput.val(`${error.message}`)
+    });
+  }
+
+  let getGeolocationPermissions = async () => {
+    return await navigator.permissions.query({ name: 'geolocation' })
+  }
+  
+  (async () => {
+    let permissions = await getGeolocationPermissions();
+    if (permissions.state === "granted") {
+      navigator.geolocation.getCurrentPosition(currentPositionSuccessCallback);
+    }
+  })();
+
+  $(`#find-me-button`).on('click', async (event) => {
+    navigator.geolocation.getCurrentPosition(currentPositionSuccessCallback);
   })
+
+  let confirmPasswordField = $(`#confirm-password-field`);
+
+  let loginButton = $(`#login-button`);
+  let createAccountButton = $(`#create-account-button`);
+  let goBackButton = $(`#go-back-button`)
+  let createMyAccountButton = $(`#create-my-account-button`)
+
+  let emailInput = $(`#email-input`);
+  let passwordInput = $(`#password-input`);
+  let latitudeInput = $(`#latitude-input`);
+  let longitudeInput = $(`#longitude-input`);
+  let confirmPasswordInput = $(`#confirm-password-input`);
+
+  let loginControl = $(`#login-control`);
+  let createAccountControl = $(`#create-account-control`);
+  let goBackControl = $(`#go-back-control`)
+  let createControl = $(`#create-my-account-control`)
+
+  createAccountButton.on('click', (event) => {
+    confirmPasswordField.removeClass("is-hidden");
+    confirmPasswordField.focus();
+
+    loginControl.addClass("is-hidden");
+    createAccountControl.addClass("is-hidden");
+
+    goBackControl.removeClass("is-hidden");
+    createControl.removeClass("is-hidden");
+
+    confirmPasswordInput.focus();
+  });
+
+  goBackButton.on('click', (event) => {
+    confirmPasswordField.addClass("is-hidden");
+
+    loginControl.removeClass("is-hidden");
+    createAccountControl.removeClass("is-hidden");
+
+    goBackControl.addClass("is-hidden");
+    createControl.addClass("is-hidden");
+  });
+
+  confirmPasswordInput.on('input', (event) => {
+    let password = passwordInput.val();
+    let confirmPassword = confirmPasswordInput.val();
+    if (password !== confirmPassword) {
+      confirmPasswordInput.addClass("is-danger");
+      return;
+    } else {
+      confirmPasswordInput.removeClass("is-danger");
+    }
+  })
+
+  createMyAccountButton.on('click', (event) => {
+
+    let email = emailInput.val();
+    let password = passwordInput.val();
+    let confirmPassword = confirmPasswordInput.val();
+    let latitude = latitudeInput.val();
+    let longitude = longitudeInput.val();
+
+    if (password !== confirmPassword) {
+      return;
+    }
+
+    let result = axios({
+      method: "post",
+      url: 'http://localhost:3000/account/create',
+      data: {
+        name: email,
+        pass: password,
+        latitude: latitude,
+        longitude: longitude,
+      }
+    }).then(response => {
+      //console.log(response.data);
+
+    }).catch(error => {
+      //console.log(error);
+    });
+
+  });
+
 </script>
 
 </html>
