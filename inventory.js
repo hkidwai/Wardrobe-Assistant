@@ -17,30 +17,35 @@ export const renderAccessories = function (event) {
 export const handleShirtUpload = async function (event) {
     event.preventDefault();
 
-    const files = document.querySelector('[type=file]').files;
-    let fileReader = new FileReader();
-    
-    fileReader.onload = async (event) => {
+    const files = $('#upload-shirts-file-input').get(0).files;
 
-        let dataURL = event.target.result;
-        
-        const result = await axios({
-            method: 'post',
-            url: 'http://localhost:3000/public/clothes/',
-            data: {
-                data: [dataURL]
-            },
-
-        }).then((response) => {
-            let shirtBar = $(`#shirtBar`);
-            let renderedShirt = renderShirt(dataURL);
-            shirtBar.append(renderedShirt);
-        }).catch((error) => {
-            
-        });
-    }
     for (let file of files) {
+
+        let fileReader = new FileReader();
+
+        fileReader.onload = async (event) => {
+
+            let dataURL = event.target.result;
+            //console.log(dataURL.slice(0, 75))
+
+            const result = await axios({
+                method: 'post',
+                url: 'http://localhost:3000/public/wardrobe/shirts/',
+                data: {
+                    data: [dataURL],
+                    type: 'merge'
+                },
+            }).then((response) => {
+                let shirtBar = $(`#shirtBar`);
+                let renderedShirt = renderShirt(dataURL);
+                shirtBar.append(renderedShirt);
+            }).catch((error) => {
+
+            });    
+        }
+
         fileReader.readAsDataURL(file);
+        
     }
 
 }
