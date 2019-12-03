@@ -113,7 +113,7 @@
           <div class="field-body">
             <div class="field is-grouped">
               <p class="control" id="login-control">
-                <button class="button is-success" type="submit" id="login-button">
+                <button class="button is-success" type="button" id="login-button">
                   Login
                 </button>
               </p>
@@ -206,6 +206,27 @@
   let goBackControl = $(`#go-back-control`)
   let createControl = $(`#create-my-account-control`)
 
+  loginButton.on('click', (event) => {
+    
+    let email = emailInput.val();
+    let password = passwordInput.val();
+    
+    let result = axios({
+      method: "post",
+      url: 'http://localhost:3000/account/login',
+      data: {
+        name: email,
+        pass: password,
+      }
+    }).then(response => {
+      let { jwt, data, name } = response.data;
+      document.cookie = "jwt=" + encodeURIComponent(jwt);
+    }).catch(error => {
+      // name or pass was incorrect
+    });
+
+  })
+
   createAccountButton.on('click', (event) => {
     confirmPasswordField.removeClass("is-hidden");
     confirmPasswordField.focus();
@@ -258,8 +279,10 @@
       data: {
         name: email,
         pass: password,
-        latitude: latitude,
-        longitude: longitude,
+        data: {
+          latitude: latitude,
+          longitude: longitude,
+        }
       }
     }).then(response => {
       //console.log(response.data);
