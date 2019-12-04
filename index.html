@@ -152,6 +152,16 @@
     //event.preventDefault();
     //console.log(event)
   })
+
+  let useIconsForIncorrect = () => {
+    $('#email-icon-span, #password-icon-span').removeClass('corrected-login').addClass('incorrect-login');
+  }
+  let useIconsForCorrected = () => {
+    $('#email-icon-span, #password-icon-span').removeClass('incorrect-login').addClass('corrected-login');
+  }
+  let clearIcons = () => {
+    $('#email-icon-span, #password-icon-span').removeClass('incorrect-login').removeClass('corrected-login');
+  }
   
   let currentPositionSuccessCallback = async (position) => {
     let locationInput = $(`#location-input`);
@@ -220,13 +230,13 @@
         pass: password,
       }
     }).then(response => {
-      $('#email-icon-span, #password-icon-span').removeClass('incorrect-login').addClass('corrected-login')
+      useIconsForCorrected();
       let { jwt, data, name } = response.data;
       localStorage.setItem('jwt', jwt);
       window.location.href='./assistant.html';
     }).catch(error => {
       // name or pass was incorrect
-      $('#email-icon-span, #password-icon-span').addClass('incorrect-login')
+      useIconsForIncorrect();
     });
 
   })
@@ -290,6 +300,8 @@
       }
     }).then(response => {
       //console.log(response.data);
+      clearIcons();
+      window.location.reload();
     }).catch(error => {
       //console.log(error);
     });
