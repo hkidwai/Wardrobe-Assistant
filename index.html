@@ -9,6 +9,7 @@
 
   <link rel="stylesheet" type="text/css" href="node_modules/bulma/css/bulma.css" />
   <link rel="stylesheet" type="text/css" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css">
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/axios/dist/axios.min.js"></script>
 </head>
@@ -30,7 +31,7 @@
             <div class="field">
               <p class="control is-expanded has-icons-left has-icons-right">
                 <input class="input" id="email-input" type="email" placeholder="Email" value="">
-                <span class="icon is-small is-left">
+                <span id="email-icon-span" class="icon is-small is-left">
                   <i class="fas fa-envelope"></i>
                 </span>
                 <span class="icon is-small is-right">
@@ -49,7 +50,7 @@
             <div class="field is-expanded">
               <p class="control has-icons-left">
                 <input class="input" id="password-input" type="password" placeholder="Password">
-                <span class="icon is-small is-left">
+                <span id="password-icon-span" class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
               </p>
@@ -219,10 +220,13 @@
         pass: password,
       }
     }).then(response => {
+      $('#email-icon-span, #password-icon-span').removeClass('incorrect-login').addClass('corrected-login')
       let { jwt, data, name } = response.data;
       localStorage.setItem('jwt', jwt);
+      window.location.href='./assistant.html';
     }).catch(error => {
       // name or pass was incorrect
+      $('#email-icon-span, #password-icon-span').addClass('incorrect-login')
     });
 
   })
