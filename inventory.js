@@ -1,23 +1,19 @@
-export const renderHats = function (event) {
+let itemTypes = ['hats', 'shirts', 'pants', 'accessories'];
 
-};
-export const renderShirt = (dataURL) => {
-    return $.parseHTML(`<img src="${dataURL}" style="border-radius: 5%;">`)[0]
-};
-export const renderShirts = function (event) {
+let prependToColumn = (item, itemType) => {
+    let column = $(`#${itemType}-column-root`);
+    let renderedItem = renderItem(item);
+    column.prepend(renderedItem);
+}
 
-};
-export const renderPants = function (event) {
-
-};
-export const renderAccessories = function (event) {
-
+export const renderItem = (dataURL) => {
+    return $.parseHTML(`<div class="notification"><img src="${dataURL}" style="border-radius: 5%;"></div>`)[0]
 };
 
-export const handleShirtUpload = async function (event) {
+export const handleItemUpload = async function (event, itemType) {
     event.preventDefault();
 
-    const files = $('#upload-shirts-file-input').get(0).files;
+    const files = $(`#upload-${itemType}-file-input`).get(0).files;
 
     for (let file of files) {
 
@@ -30,33 +26,47 @@ export const handleShirtUpload = async function (event) {
 
             const result = await axios({
                 method: 'post',
-                url: 'http://localhost:3000/public/wardrobe/shirts/',
+                url: `http://localhost:3000/public/wardrobe/${itemType}/`,
                 data: {
                     data: [dataURL],
                     type: 'merge'
                 },
             }).then((response) => {
-                let shirtBar = $(`#shirtBar`);
-                let renderedShirt = renderShirt(dataURL);
-                shirtBar.append(renderedShirt);
+                prependToColumn(dataURL, itemType);
             }).catch((error) => {
 
-            });    
+            });
         }
 
         fileReader.readAsDataURL(file);
-        
+
     }
 
 }
 
+export const getAllItems = async (itemType) => {
+    let itemURL = `http://localhost:3000/public/wardrobe/${itemType}`;
+    let result = axios({
+        method: "get",
+        url: itemURL,
+    }).then(response => {
+        return response.data.result;
+    }).catch(error => {
+        return [];
+    });
+    return result;
+}
 
-$(function () {
-    let preventDefault = (event) => {
-        event.preventDefault();
+$(async function () {
+
+    for (let itemType of itemTypes) {
+        $(`#upload-${itemType}-file-input`).on('input', event => handleItemUpload(event, itemType))
     }
-    let uploadShirtsForm = $('#upload-shirts-form')
-    uploadShirtsForm.on('submit', preventDefault);
 
-    $('#upload-shirts-button').on('click', handleShirtUpload);
+    for (let itemType of itemTypes) {
+        let items = await getAllItems(itemType);
+        for (let item of items) {
+            prependToColumn(item, itemType);
+        }
+    }
 });

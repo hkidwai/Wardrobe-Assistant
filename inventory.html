@@ -15,38 +15,80 @@
 </head>
 
 <body>
-	<div class="container is-fluid">
-		<div class="notification">
-			<h1 class="title">Inventory</h1>
-			<h2 class="subtitle">See all of what your wardrobe can offer!</h2>
+	<section class="hero is-primary is-bold">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title is-1">Inventory</h1>
+				<h2 class="subtitle is-4">See all of what your wardrobe can offer!</h2>
+			</div>
 		</div>
-
-		<div class="tile is-ancestor" style="display:block">
-
-			<div class="tile is-3 is-parent" style="display: inline;">
-				<div class="tile is-child box field">
-					<div id="reset-root">
-						<div style="display:inline">
-
-							<p class="title is-5">Shirts</p>
-							<div id="shirtBar" class="container" style="overflow-x:scroll;">
-								<div class="notification" style="overflow-x:scroll">
-									This container is <strong>centered</strong> on desktop.
-								</div>
-							</div>
-							<form id="upload-shirts-form">
-								<input id="upload-shirts-file-input" type="file" name="files[]" multiple />
-								<button id="upload-shirts-button" class="submitUpload" type="button"
-									name="submit">Upload File</button>
-							</form>
-
-						</div>
+	</section>
+	<section class="section">
+		<div class="container is-fluid">
+			<div class="columns">
+				<div class="column">
+					<h1 class="title is-2">Hats</h1>
+					<div class="file is-boxed is-fullwidth is-info">
+						<label class="file-label">
+							<input id="upload-hats-file-input" class="file-input" type="file" multiple>
+							<span class="file-cta">
+								<span class="file-icon">
+									<i class="fas fa-upload"></i>
+								</span>
+								<span class="file-label is-fullwidth has-text-centered">Upload</span>
+							</span>
+						</label>
 					</div>
+					<div id="hats-column-root"></div>
+				</div>
+				<div class="column">
+					<h1 class="title is-2">Shirts</h1>
+					<div class="file is-boxed is-fullwidth is-info">
+						<label class="file-label">
+							<input id="upload-shirts-file-input" class="file-input" type="file" multiple>
+							<span class="file-cta">
+								<span class="file-icon">
+									<i class="fas fa-upload"></i>
+								</span>
+								<span class="file-label is-fullwidth has-text-centered">Upload</span>
+							</span>
+						</label>
+					</div>
+					<div id="shirts-column-root"></div>
+				</div>
+				<div class="column">
+					<h1 class="title is-2">Pants</h1>
+					<div class="file is-boxed is-fullwidth is-info">
+						<label class="file-label">
+							<input id="upload-pants-file-input" class="file-input" type="file" multiple>
+							<span class="file-cta">
+								<span class="file-icon">
+									<i class="fas fa-upload"></i>
+								</span>
+								<span class="file-label is-fullwidth has-text-centered">Upload</span>
+							</span>
+						</label>
+					</div>
+					<div id="pants-column-root"></div>
+				</div>
+				<div class="column">
+					<h1 class="title is-2">Accessories</h1>
+					<div class="file is-boxed is-fullwidth is-info">
+						<label class="file-label">
+							<input id="upload-accessories-file-input" class="file-input" type="file" multiple>
+							<span class="file-cta">
+								<span class="file-icon">
+									<i class="fas fa-upload"></i>
+								</span>
+								<span class="file-label is-fullwidth has-text-centered">Upload</span>
+							</span>
+						</label>
+					</div>
+					<div id="accessories-column-root"></div>
 				</div>
 			</div>
 		</div>
-	</div>
-
+	</section>
 	<script type="module" src="inventory.js" type="module"></script>
 </body>
 
