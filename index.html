@@ -162,7 +162,7 @@
   let clearIcons = () => {
     $('#email-icon-span, #password-icon-span').removeClass('incorrect-login').removeClass('corrected-login');
   }
-  
+
   let currentPositionSuccessCallback = async (position) => {
     let locationInput = $(`#location-input`);
     let latitude = position.coords.latitude;//.toFixed(2);
@@ -187,7 +187,7 @@
   let getGeolocationPermissions = async () => {
     return await navigator.permissions.query({ name: 'geolocation' })
   }
-  
+
   (async () => {
     let permissions = await getGeolocationPermissions();
     if (permissions.state === "granted") {
@@ -217,24 +217,45 @@
   let goBackControl = $(`#go-back-control`)
   let createControl = $(`#create-my-account-control`)
 
-  loginButton.on('click', (event) => {
-    
+  loginButton.on('click', async (event) => {
+
     let email = emailInput.val();
     let password = passwordInput.val();
-    
-    let result = axios({
+    let latitude = latitudeInput.val();
+    let longitude = longitudeInput.val();
+
+    let result = await axios({
       method: "post",
       url: 'http://localhost:3000/account/login',
       data: {
         name: email,
         pass: password,
       }
-    }).then(response => {
+    }).then(async response => {
       useIconsForCorrected();
       let { jwt, data, name } = response.data;
       localStorage.setItem('jwt', jwt);
-      window.location.href='./assistant.html';
-    }).catch(error => {
+
+      let result2 = await axios({
+        method: "post",
+        url: 'http://localhost:3000/user/geolocation/',
+        headers: {
+          Authorization: `Bearer ${jwt}`
+        },
+        data: {
+          data: {
+            latitude: latitude,
+            longitude: longitude,
+          }
+        }
+      }).then(async response => {
+        
+      }).catch(async error => {
+        
+      });
+
+      window.location.href = './assistant.html';
+    }).catch(async error => {
       // name or pass was incorrect
       useIconsForIncorrect();
     });
@@ -293,10 +314,6 @@
       data: {
         name: email,
         pass: password,
-        data: {
-          latitude: latitude,
-          longitude: longitude,
-        }
       }
     }).then(response => {
       //console.log(response.data);
