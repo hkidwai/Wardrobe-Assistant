@@ -4,66 +4,58 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wardrobe Assistant</title>
+    <title>Cloud Closet</title>
 
     <link rel="stylesheet" type="text/css" href="node_modules/bulma/css/bulma.css">
     <link rel="stylesheet" type="text/css" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet" href="styles.css">
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script src="node_modules/axios/dist/axios.min.js"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
 
 </head>
 
 <body>
-
+    <section class="hero is-primary is-bold">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title is-1">Cloud Closet</h1>
+                <h2 class="subtitle is-4">Know what's in your wardrobe, and get inspiration on what to wear</h2>
+            </div>
+        </div>
+    </section>
     <section class="section">
         <div class="container is-fluid">
-            <div class="notification">
-                <h1 class="title">Wardrobe Assistant</h1>
-                <h2 class="subtitle">Know what's in your wardrobe, and get inspiration on what to wear</h2>
-            </div>
+            <h1 class="title is-2">Our Suggestion</h1>
+            <div class="columns">
+                <div class="column is-4">
 
-            <div class="tile is-ancestor is-vertical">
-                <div class="tile is-parent is-12">
-                    <article class="tile is-child notification is-primary">
-                        <p class="title">What should I wear today?</p>
-                        <p class="subtitle">Give me advice</p>
-                    </article>
+
+                    <div id="hats-item-root"></div>
+                    <div id="shirts-item-root"></div>
+                    <div id="pants-item-root"></div>
+                    <div id="accessories-item-root"></div>
                 </div>
-                <div class="is-parent">
-                    <div class="tile is-parent is-6">
-                        <article class="tile is-child notification is-warning">
-                            <p class="title">Check today's weather</p>
-                            <p class="subtitle"></p>
-                        </article>
-                        <article class="tile is-child notification is-info">
+                <div class="column is-8">
+
+                    <article id="resuggest-suggestion-button" class="notification is-success">
+                        <p class="title">What else can I wear today?</p>
+                        <p class="subtitle">Give me different advice</p>
+                    </article>
+                    <article class="notification is-warning">
+                        <p class="title">Today's weather</p>
+                        <p class="subtitle" id="todays-weather-detailed"></p>
+                    </article>
+                    <a href="inventory.html">
+                        <article class="notification is-info">
                             <p class="title">Or, browse through my wardrobe &rarr;</p>
                             <p class="subtitle"></p>
                         </article>
-                    </div>
-                </div>
-                <div class="tile is-parent is-6">
+                    </a>
                 </div>
             </div>
-            <!-- <div class="tile is-ancestor">
-                <div class="tile is-parent is-6">
-                    <article class="tile is-child notification is-primary">
-                        <p class="title">What should I wear today?</p>
-                        <p class="subtitle">Give me advice</p>
-                    </article>
-                </div>
-                <div class="tile is-parent is-6">
-                    <article class="tile is-child notification is-info">
-                        <p class="title">Or, browse through my wardrobe &rarr;</p>
-                        <p class="subtitle"></p>
-                    </article>
-                </div>
-            </div> -->
-
         </div>
-
-
     </section>
+    
     <script type="module" src="assistant.js" type="module"></script>
 </body>
 
